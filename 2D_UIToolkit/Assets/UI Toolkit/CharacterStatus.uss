@@ -1,0 +1,15 @@
+#CharacterStatus {
+    --background-color: rgb(66, 66, 66);
+}
+
+.red {
+    --fill-color: rgb(239, 83, 80);
+}
+
+.yellow {
+    --fill-color: rgb(255, 202, 40);
+}
+
+.green {
+    --fill-color: rgb(102, 187, 106);
+}

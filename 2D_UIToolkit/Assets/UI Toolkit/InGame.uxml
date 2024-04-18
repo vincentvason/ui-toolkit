@@ -1,0 +1,10 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/CharacterStatus.uss?fileID=7433441132597879392&amp;guid=726d097c79f0fb247900454d81cdedc2&amp;type=3#CharacterStatus" />
+    <engine:VisualElement style="flex-grow: 1; justify-content: flex-end; align-items: flex-start;">
+        <CharacterStatus progress="1.03" name="CharacterStatus" class="green" style="height: 15%; width: 15%; left: 5%;">
+            <Bindings>
+                <engine:DataBinding property="progress" binding-mode="ToTarget" data-source-type="Platformer.Mechanics.Health, Assembly-CSharp" data-source-path="gaugeHP" />
+            </Bindings>
+        </CharacterStatus>
+    </engine:VisualElement>
+</engine:UXML>
