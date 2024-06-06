@@ -87,7 +87,7 @@ I experimented with two sections: the Main Menu and the Health Bar. For both sec
 ![image](https://github.com/vincentvason/ui-toolkit/assets/15789782/898ced8e-16d5-4df4-9648-6170bf4c20bd)
 
 ### Status Bar
-- <code>CharacterStatus</code> is a custom tag, derived from VisualElement (as a half-circle progress bar). Please see Unity C# integration section and [source code](https://github.com/vincentvason/ui-toolkit/blob/main/2D_UIToolkit/Assets/UI%20Toolkit/LocalizedButton.cs).
+- <code>CharacterStatus</code> is a custom tag, derived from VisualElement (as a half-circle progress bar). Please see Unity C# integration section and [source code](https://github.com/vincentvason/ui-toolkit/blob/main/2D_UIToolkit/Assets/UI%20Toolkit/CharacterStatus.cs).
 - <code>CharacterStatus</code>'s class also determine the colour of the progress bar which is indicated in [<code>CharacterStatus</code>'s USS](https://github.com/vincentvason/ui-toolkit/blob/main/2D_UIToolkit/Assets/UI%20Toolkit/CharacterStatus.uss).
 - Custom attributes and binding to a parameter using <code>engine</code> tag. An attribute named <code>progress</code> is created as a character's health.
 
@@ -121,7 +121,7 @@ I experimented with two sections: the Main Menu and the Health Bar. For both sec
 
 
 ## Unity C# Integration
-- Custom Tag is created Unity C#. Using <code>UxmlElement</code>, and derived from any base tag. For example, <code>LocalizedButton</code> is derived from <code>Button</code> tag. This button is attached to the Unity Localization module, which is able to change text depends on language setting.
+- Custom Tag is created Unity C#. Using <code>UxmlElement</code>, and derived from any base tag. For example, <code>LocalizedButton</code> is derived from <code>Button</code> tag. This button is attached to the Unity Localization module, which can change text depending on the language setting.
 
 ### C#
 ```
@@ -160,8 +160,55 @@ public partial class LocalizedButton : Button
 ```
 ![image](https://github.com/vincentvason/ui-toolkit/assets/15789782/33cbf12b-d749-415b-a695-383270dad6cc)
 
+- Another example is, <code>CharacterStatus</code> which is derived from <code>VisualElement</code> tag. It can access <code>GenerateVisualContent</code>'s function that can draw content (similar to Canvas) in HTML.
 
+*You can see full [source code](https://github.com/vincentvason/ui-toolkit/blob/main/2D_UIToolkit/Assets/UI%20Toolkit/CharacterStatus.cs) for more info.
+```
+[UxmlElement]
+public partial class CharacterStatus : VisualElement
+{
+    static CustomStyleProperty<Color> s_FillColor = new CustomStyleProperty<Color>("--fill-color");
+    static CustomStyleProperty<Color> s_BackgroundColor = new CustomStyleProperty<Color>("--background-color");
+...
+}
+```
 
+```
+private void GenerateVisualContent(MeshGenerationContext context)
+    {
+        float width = contentRect.width;
+        float height = contentRect.height;
+
+        //Border
+        var painter = context.painter2D;
+        painter.BeginPath();
+        painter.lineWidth = 10f;
+        painter.Arc(new Vector2(width * 0.5f, height), width * 0.5f, 180f, 0f);
+        painter.ClosePath();
+        painter.fillColor = m_BackgroundColor;
+        painter.Fill(FillRule.NonZero);
+        painter.Stroke();
+
+        //Fill
+        painter.BeginPath();
+        painter.LineTo(new Vector2(width * 0.5f, height));
+        painter.lineWidth = 10f;
+        painter.Arc(new Vector2(width * 0.5f, height), width * 0.5f, 180f, 0f - 180f * (1f-progress));
+        painter.ClosePath();
+        painter.fillColor = m_FillColor;
+        painter.Fill(FillRule.NonZero);
+        painter.Stroke();
+
+        //Inner Fill
+        painter.BeginPath();
+        painter.lineWidth = 10f;
+        painter.Arc(new Vector2(width * 0.5f, height), width * 0.35f, 180f, 0f);
+        painter.ClosePath();
+        painter.fillColor = Color.black;
+        painter.Fill(FillRule.NonZero);
+        painter.Stroke();
+    }
+```
 
 
 
